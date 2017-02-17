@@ -3,7 +3,33 @@
 
 FROM ubuntu:latest
 
-RUN apt-get update && apt-get -y install cron
+RUN apt-get update && apt-get -y install \
+   cron \
+   vim
+
+ARG installdir=/opt/botanist
+ENV INSTALLDIR=$installdir
+
+# note, need to pass the env vars to image:
+# $USE_BB
+# $BB_USER
+# $BB_PW
+# $BB_TEAM
+# $BB_USE_HTTP
+# $BB_IGNORE_REPO_LIST
+
+# $USE_GH
+# $GH_USER
+# $GH_PW
+# $GH_ORG
+
+
+RUN mkdir -p $installdir/packages
+RUN mkdir -p $installdir/crons
+ADD packages/bitbucket-backup.tgz $installdir/packages
+COPY packages/github_backup.py $installdir/packages
+COPY cron/fetch-code.sh.template $installdir/cron/fetch-code.sh
+RUN chmod 0744 $installdir/cron/fetch-code.sh
 
 # Add crontab file in the cron directory
 ADD crontab /etc/cron.d/hello-cron
