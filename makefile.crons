@@ -1,0 +1,2 @@
+all:
+	docker build --rm -f cron.Dockerfile -t crons .
