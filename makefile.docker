@@ -1,0 +1,5 @@
+all: crons golang
+crons:
+	docker build --rm -f cron.Dockerfile -t crons .
+golang:
+	docker build --rm -f golang.Dockerfile -t golang .
