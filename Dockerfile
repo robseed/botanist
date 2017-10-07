@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM python:2.7.14
 
 ENV r=/botanist
 
@@ -22,4 +22,10 @@ ADD packages/github_backup.py ${r}/bin
 ADD cron/index.sh ${r}/bin/index.sh
 ADD cron/fetch-code.sh ${r}/bin/fetch-code.sh
 
+ADD webapp/requirements.txt /tmp
+RUN pip install -r /tmp/requirements.txt
+ADD ./webapp /code
+
 VOLUME ${r}/repos
+
+CMD uwsgi --http :9090 --chdir /code --wsgi-file /code/codesearch/wsgi.py

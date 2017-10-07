@@ -109,9 +109,8 @@ LOGGING = {
     'handlers': {
         'file': {
             'level': 'DEBUG',
-            'class': 'logging.FileHandler',
+            'class': 'logging.StreamHandler',
             'formatter': 'verbose',
-            'filename': './logs/webapp.log',
         },
     },
     'root': {
