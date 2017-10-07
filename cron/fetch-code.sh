@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
-BIN=$INSTALLDIR/bin
-REPOS=$INSTALLDIR/repos
-LOG_DIR=$INSTALLDIR/logs
+BIN=/botanist/bin
+REPOS=/botanist/repos
 
 ############################
 # bitbucket.org
@@ -32,7 +31,7 @@ if ( set -o noclobber; echo "$$" > "$lockfile") 2> /dev/null; then
     if [[ $USE_BB == "true" ]]; then
 
         log "Starting fetching/updating bitbucket.org repositories..."
-        mkdir -p $LOG_DIR
+
         if [ -n "$BB_IGNORE_REPO_LIST" ]; then
             $BIN/bitbucket-backup/backup.py $BB_USE_HTTP -u $BB_USER -l $BITBUCKET -p $BB_PW -t $BB_TEAM -v --ignore-repo-list $IGNORE_REPO_LIST 2>&1
         else
@@ -44,7 +43,7 @@ if ( set -o noclobber; echo "$$" > "$lockfile") 2> /dev/null; then
     if [[ $USE_GH == "true" ]]; then
 
         log "Starting fetching/updating github.com repositories..."
-        mkdir -p $LOG_DIR
+
         $BIN/github_backup.py https -u $GH_USER -p $GH_PW -o $GH_ORG -d $GITHUB 2>&1
 
     fi

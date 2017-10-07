@@ -1,0 +1,21 @@
+FROM debian:jessie
+
+ENV r=/botanist
+
+RUN apt-get update && apt-get install -y \
+    git \
+    mercurial \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p \
+    ${r}/bin \
+    ${r}/packages \
+    ${r}/repos \
+    ${r}/repos/bitbucket \
+    ${r}/repos/github
+
+ADD packages/bitbucket-backup.tgz ${r}/bin
+ADD packages/github_backup.py ${r}/bin
+ADD cron/fetch-code.sh ${r}/bin/fetch-code.sh
+
+VOLUME ${r}/repos
