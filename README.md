@@ -106,10 +106,14 @@ docker run --env-file env -v $HOME/botanist/repos:/botanist/repos botanist /bota
 **note: requires active virtualenv w/ `requirements.txt` installed**
 
 ```
-cd webapp && ./manage.py collectstatic --noinput
+cd webapp/
+mkvirtualenv botanist
+pip install -r requirements.txt
+./manage.py collectstatic --noinput
 ```
 
 ### start the webapp and nginx
 ```
+# back in the root directory
 docker-compose rm -f && docker-compose up --build
 ```
