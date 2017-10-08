@@ -7,7 +7,12 @@ RUN /code/manage.py collectstatic --noinput
 
 # multistage builds are awesomeeee
 # https://docs.docker.com/engine/userguide/eng-image/multistage-build/#use-multi-stage-builds
-FROM nginx:1.13.5
+# FROM nginx:1.13.5
+# https://github.com/g17/nginx-ldap
+FROM h3nrik/nginx-ldap:1.11.13
+
+# for envsubst
+RUN apt-get install -y gettext
 
 # from https://raw.githubusercontent.com/nginx/nginx/master/conf/uwsgi_params
 ADD uwsgi_params /etc/nginx/uwsgi_params

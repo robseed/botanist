@@ -106,7 +106,7 @@ def do_search(query, case_sensitive=True):
 
     p = Popen([cmd], stdout=PIPE, stderr=PIPE, shell=True)
     out, err = p.communicate()
-    log.info('csearch return code = %d')
+    log.info('csearch return code = %d', p.returncode)
     if p.returncode > 1: # not zero, see the source for csearch
         raise CSearchMissingError(err)
 

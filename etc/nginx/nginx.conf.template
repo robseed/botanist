@@ -1,3 +1,7 @@
+events {
+  worker_connections 1024;
+}
+
 http {
 
    # the upstream component nginx needs to connect to
@@ -6,6 +10,19 @@ http {
       server ${NGINX_HOST}:${NGINX_PORT}; # for a web port socket (we'll use this first)
    }
 
+   ldap_server ldapserver {
+      #TODO externalize into envvars
+      url ldap://ldap/dc=example,dc=com?uid?sub?(objectClass=person);
+      binddn "cn=admin,dc=example,dc=com";
+      binddn_passwd toor;
+      group_attribute member;
+      group_attribute_is_dn on;
+      require group 'cn=docker,ou=groups,dc=example,dc=com';
+      require valid_user;
+      satisfy all;
+   }
+
+   # TODO ssl
    server {
       listen 80;
       server_name localhost;
@@ -20,11 +37,11 @@ http {
 
       # connect to django app
       location / {
+         auth_ldap "Forbidden";
+         auth_ldap_servers ldapserver;
          uwsgi_pass django;
          include /etc/nginx/uwsgi_params;
       }
    }
 }
 
-events {
-}

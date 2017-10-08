@@ -6,13 +6,13 @@ services:
          context: ./
          dockerfile: Dockerfile.nginx
       environment:
-         - NGINX_HOST=botanist-webapp
+         - NGINX_HOST=webapp
          - NGINX_PORT=9090
       ports:
          - 80:80
       command: /bin/bash -c "envsubst < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"
 
-   botanist-webapp:
+   webapp:
       build:
          context: ./
          dockerfile: Dockerfile
@@ -22,3 +22,22 @@ services:
          - ./env
       volumes:
          - $HOME/botanist/repos:/botanist/repos
+
+   ldap:
+      image: nickstenning/slapd
+      ports:
+         - 389:389
+      environment:
+         - LDAP_DOMAIN=example.com
+         - LDAP_ORGANIZATION="Example Ltd."
+         - LDAP_ROOTPASS=toor
+
+   # this runs to add a test user to the ldap docker container and then exits
+   # you can log in with username: test and password: t3st
+   ldapinit:
+      build:
+         context: ./
+         dockerfile: Dockerfile.ldapinit
+      depends_on:
+         - ldap
+      command: dockerize -wait tcp://ldap:389 ldapadd -v -h ldap -c -x -D cn=admin,dc=example,dc=com -w toor -f /tmp/sample.ldif
