@@ -101,19 +101,7 @@ docker run --env-file env -v $HOME/botanist/repos:/botanist/repos botanist /bota
 docker run --env-file env -v $HOME/botanist/repos:/botanist/repos botanist /botanist/bin/index.sh
 ```
 
-### collect static assets to be served by nginx
-
-**note: requires active virtualenv w/ `requirements.txt` installed**
-
-```
-cd webapp/
-mkvirtualenv botanist
-pip install -r requirements.txt
-./manage.py collectstatic --noinput
-```
-
 ### start the webapp and nginx
 ```
-# back in the root directory
 docker-compose rm -f && docker-compose up --build
 ```
