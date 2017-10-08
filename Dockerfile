@@ -28,4 +28,4 @@ ADD ./webapp /code
 
 VOLUME ${r}/repos
 
-CMD uwsgi --http :9090 --chdir /code --wsgi-file /code/codesearch/wsgi.py
+CMD uwsgi --socket :9090 --chdir /code --wsgi-file /code/codesearch/wsgi.py

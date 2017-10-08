@@ -1,3 +1,4 @@
 *.log
 fabfile.py
 target/
+botanist-static

@@ -82,3 +82,34 @@ wrote up something to do this in Python based on
 https://github.com/celeen/gitter
 
 ##pull requests welcome! checkout the TODOs file
+
+
+# docker
+
+### bootstrap volume mount point
+```
+mkdir -p $HOME/botanist/repos
+```
+
+### fetch code
+```
+docker run --env-file env -v $HOME/botanist/repos:/botanist/repos botanist /botanist/bin/fetch-code.sh
+```
+
+### index code
+```
+docker run --env-file env -v $HOME/botanist/repos:/botanist/repos botanist /botanist/bin/index.sh
+```
+
+### collect static assets to be served by nginx
+
+**note: requires active virtualenv w/ `requirements.txt` installed**
+
+```
+cd webapp && ./manage.py collectstatic --noinput
+```
+
+### start the webapp and nginx
+```
+docker-compose rm -f && docker-compose up --build
+```
