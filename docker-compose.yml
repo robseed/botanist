@@ -8,9 +8,12 @@ services:
       environment:
          - NGINX_HOST=webapp
          - NGINX_PORT=9090
+         - LDAP_URL="ldap://ldap/dc=example,dc=com?uid?sub?(objectClass=person)"
+         - LDAP_BIND_DN="cn=admin,dc=example,dc=com"
+         - LDAP_BIND_DN_PASSWD=toor
+         - LDAP_REQUIRE_GROUP='cn=docker,ou=groups,dc=example,dc=com'
       ports:
          - 80:80
-      command: /bin/bash -c "envsubst < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"
 
    webapp:
       build:

@@ -19,3 +19,5 @@ ADD uwsgi_params /etc/nginx/uwsgi_params
 ADD ./etc/nginx/nginx.conf.template /etc/nginx/nginx.conf.template
 
 COPY --from=collectstatic /code/botanist-static /data/static
+
+CMD /bin/bash -c "envsubst < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"

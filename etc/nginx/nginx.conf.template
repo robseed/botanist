@@ -12,12 +12,12 @@ http {
 
    ldap_server ldapserver {
       #TODO externalize into envvars
-      url ldap://ldap/dc=example,dc=com?uid?sub?(objectClass=person);
-      binddn "cn=admin,dc=example,dc=com";
-      binddn_passwd toor;
+      url ${LDAP_URL};
+      binddn ${LDAP_BIND_DN};
+      binddn_passwd ${LDAP_BIND_DN_PASSWD};
       group_attribute member;
       group_attribute_is_dn on;
-      require group 'cn=docker,ou=groups,dc=example,dc=com';
+      require group ${LDAP_REQUIRE_GROUP};
       require valid_user;
       satisfy all;
    }
